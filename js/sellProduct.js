@@ -75,3 +75,49 @@ function updateTotalAmount() {
     document.getElementById("totalAmount").value = "";
   }
 }
+
+function updateInventory(productName, soldQuantity) {
+  // Open a connection to IndexedDB
+  const request = indexedDB.open("inventory", 1);
+
+  request.onerror = function (event) {
+    console.error("Error opening database:", event.target.error);
+  };
+
+  request.onsuccess = function (event) {
+    const db = event.target.result;
+
+    // Create a transaction on the 'products' object store with readwrite access
+    const transaction = db.transaction(["products"], "readwrite");
+    const objectStore = transaction.objectStore("products");
+
+    // Retrieve the product by productName
+    const getRequest = objectStore.get(productName);
+
+    getRequest.onsuccess = function (event) {
+      // Update product quantity
+      const product = event.target.result;
+      if (product) {
+        product.quantity -= soldQuantity;
+        // Update the product in the database
+        const updateRequest = objectStore.put(product);
+        updateRequest.onerror = function (event) {
+          console.error("Error updating product:", event.target.error);
+        };
+      } else {
+        console.error("Product not found:", productName);
+      }
+    };
+
+    getRequest.onerror = function (event) {
+      console.error("Error retrieving product:", event.target.error);
+    };
+  };
+
+  request.onupgradeneeded = function (event) {
+    // Create 'products' object store if it doesn't exist
+    const db = event.target.result;
+    const objectStore = db.createObjectStore("products", { keyPath: "name" });
+    objectStore.createIndex("name", "name", { unique: true });
+  };
+}
