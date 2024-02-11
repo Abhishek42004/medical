@@ -1,0 +1,80 @@
+/* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body styles */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+  }
+  nav {
+    background-color: #333;
+    width: 100vw;
+    margin-bottom: 1rem;
+    color: white;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+  }
+  a {
+    color: white;
+    padding: 1rem;
+    text-decoration: none;
+    font-size: 1.5rem;
+  }
+  /* Container styles */
+  .container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading styles */
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Table styles */
+  .table-container {
+    overflow-x: auto;
+  }
+ /* Add this CSS to your existing stylesheet */
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 20px; /* Add some space between the table and other content */
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  thead {
+    background-color: #f9f9f9;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Responsive table styles */
+  @media screen and (max-width: 600px) {
+    th, td {
+      padding: 5px; /* Reduce padding on smaller screens */
+      font-size: 14px; /* Decrease font size for better readability */
+    }
+  }
+ 
+  
