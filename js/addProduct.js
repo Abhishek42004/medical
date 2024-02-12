@@ -30,7 +30,7 @@ request.onsuccess = function (event) {
 
   // Create object store if it doesn't exist
   if (!db.objectStoreNames.contains("products")) {
-    db.createObjectStore("products", { keyPath: "id", autoIncrement: true });
+    db.createObjectStore("products", { keyPath: "name", autoIncrement: true });
   }
 
   const productNameInput = document.getElementById("productName");
@@ -98,5 +98,5 @@ request.onsuccess = function (event) {
 
 request.onupgradeneeded = function (event) {
   const db = event.target.result;
-  db.createObjectStore("products", { keyPath: "id", autoIncrement: true });
+  db.createObjectStore("products", { keyPath: "name", autoIncrement: true });
 };

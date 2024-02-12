@@ -101,6 +101,9 @@ function updateInventory(productName, soldQuantity) {
         product.quantity -= soldQuantity;
         // Update the product in the database
         const updateRequest = objectStore.put(product);
+        updateRequest.onsuccess = function (event) {
+          console.log("Product updated successfully:", product);
+        };
         updateRequest.onerror = function (event) {
           console.error("Error updating product:", event.target.error);
         };
