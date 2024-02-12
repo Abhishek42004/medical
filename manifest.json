@@ -1,18 +1,19 @@
 {
     "name": "My Medical Shop",
     "short_name": "Medical Shop",
-    "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
+    "start_url": "/medical/",
     "theme_color": "#007bff",
+    "orientation": "portrait",
     "icons": [
         {
-            "src": "/img/medimini.png",
+            "src": "./img/medimini.png",
             "type": "image/png",
-            "sizes": "192x192"
+            "sizes": "128x128"
         },
         {
-            "src": "/img/medi.png",
+            "src": "./img/medi.png",
             "type": "image/png",
             "sizes": "512x512"
         }

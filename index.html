@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Product</title>
     <link rel="stylesheet" href="./css/addProduct.css" />
+    <link rel="manifest" href="./manifest.json" />
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("./sw.js").then(
+            function (registration) {
+              console.log(
+                "ServiceWorker registration successful with scope: ",
+                registration.scope
+              );
+            },
+            function (err) {
+              console.log("ServiceWorker registration failed: ", err);
+            }
+          );
+        });
+      }
+    </script>
   </head>
   <body>
     <nav class="navbar">
@@ -65,19 +83,6 @@
       </form>
     </div>
 
-    <script>
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/medical/sw.js')
-              .then(function(registration) {
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-              }, function(err) {
-                console.log('ServiceWorker registration failed: ', err);
-              });
-          });
-        }
-      </script>
-      
     <script src="./js/addProduct.js"></script>
   </body>
 </html>
