@@ -5,6 +5,42 @@ document.addEventListener("DOMContentLoaded", function () {
   const totalAmountInput = document.getElementById("totalAmount");
   const errorMessage = document.getElementById("errorMessage");
 
+  const suggestionsContainer = document.getElementById("suggestions");
+
+  function displayProductList() {
+    // Open a connection to IndexedDB
+    const request = indexedDB.open("inventory", 1);
+
+    request.onerror = function (event) {
+      console.error("Error opening database:", event.target.error);
+    };
+
+    request.onsuccess = function (event) {
+      const db = event.target.result;
+      // Open a transaction on the 'products' object store with readonly access
+      const transaction = db.transaction(["products"], "readonly");
+      const objectStore = transaction.objectStore("products");
+      // Get all products from the object store
+      const getRequest = objectStore.getAll();
+      getRequest.onsuccess = function (event) {
+        const products = event.target.result;
+        return products;
+      };
+      getRequest.onerror = function (event) {
+        console.error("Error retrieving products:", event.target.error);
+      };
+    };
+
+    request.onupgradeneeded = function (event) {
+      // Create 'products' object store if it doesn't exist
+      const db = event.target.result;
+      const objectStore = db.createObjectStore("products", {
+        keyPath: "productName",
+      });
+      objectStore.createIndex("name", "name", { unique: true });
+    };
+  }
+
   quantityInput.addEventListener("input", updateTotalAmount);
   sellingPriceInput.addEventListener("input", updateTotalAmount);
 
@@ -45,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Retrieve product from IndexedDB and deduct stock
       const productName = productNameInput.value;
       const soldQuantity = parseInt(quantityInput.value);
+      console.log(productName, soldQuantity);
       updateInventory(productName, soldQuantity);
 
       // Clear form fields
@@ -90,7 +127,7 @@ function updateInventory(productName, soldQuantity) {
     // Create a transaction on the 'products' object store with readwrite access
     const transaction = db.transaction(["products"], "readwrite");
     const objectStore = transaction.objectStore("products");
-
+    console.log(productName);
     // Retrieve the product by productName
     const getRequest = objectStore.get(productName);
 
@@ -98,7 +135,7 @@ function updateInventory(productName, soldQuantity) {
       // Update product quantity
       const product = event.target.result;
       if (product) {
-        product.quantity -= soldQuantity;
+        product.tablet -= soldQuantity;
         // Update the product in the database
         const updateRequest = objectStore.put(product);
         updateRequest.onsuccess = function (event) {
@@ -120,7 +157,9 @@ function updateInventory(productName, soldQuantity) {
   request.onupgradeneeded = function (event) {
     // Create 'products' object store if it doesn't exist
     const db = event.target.result;
-    const objectStore = db.createObjectStore("products", { keyPath: "name" });
+    const objectStore = db.createObjectStore("products", {
+      keyPath: "productName",
+    });
     objectStore.createIndex("name", "name", { unique: true });
   };
 }

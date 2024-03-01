@@ -22,6 +22,7 @@ function displayProductList() {
 
     getRequest.onsuccess = function (event) {
       const products = event.target.result;
+      console.log(products);
 
       // Display product list
       const productListContainer = document.getElementById("productList");
@@ -33,9 +34,11 @@ function displayProductList() {
                     <thead>
                         <tr>
                             <th>Product Title</th>
-                            <th>Quantity</th>
+                            <th>Tab</th>
                             <th>Cost Price</th>
-                            <th>Selling Price</th>
+                            <th>MRP</th>
+                            <th>Expiry</th>
+                            <th>Price</th>
                         </tr>
                     </thead>
                     <tbody id="productListBody"></tbody>
@@ -60,7 +63,9 @@ function displayProductList() {
   request.onupgradeneeded = function (event) {
     // Create 'products' object store if it doesn't exist
     const db = event.target.result;
-    const objectStore = db.createObjectStore("products", { keyPath: "name" });
+    const objectStore = db.createObjectStore("products", {
+      keyPath: "productName",
+    });
     objectStore.createIndex("name", "name", { unique: true });
   };
 }
@@ -69,20 +74,28 @@ function createProductRow(product) {
   const row = document.createElement("tr");
 
   const productNameCell = document.createElement("td");
-  productNameCell.textContent = product.name;
+  productNameCell.textContent = product.productName;
   row.appendChild(productNameCell);
 
-  const quantityCell = document.createElement("td");
-  quantityCell.textContent = product.quantity;
-  row.appendChild(quantityCell);
+  const stripCell = document.createElement("td");
+  stripCell.textContent = product.tablet;
+  row.appendChild(stripCell);
 
   const costPriceCell = document.createElement("td");
   costPriceCell.textContent = product.costPrice.toFixed(2);
   row.appendChild(costPriceCell);
 
-  const sellingPriceCell = document.createElement("td");
-  sellingPriceCell.textContent = product.sellingPrice.toFixed(2);
-  row.appendChild(sellingPriceCell);
+  const mrpCell = document.createElement("td");
+  mrpCell.textContent = product.mrp.toFixed(2);
+  row.appendChild(mrpCell);
+
+  const expiryCell = document.createElement("td");
+  expiryCell.textContent = product.expiry.toFixed(2);
+  row.appendChild(expiryCell);
+
+  const tabletSellingPriceCell = document.createElement("td");
+  tabletSellingPriceCell.textContent = product.tabletsellingPrice.toFixed(2);
+  row.appendChild(tabletSellingPriceCell);
 
   return row;
 }
