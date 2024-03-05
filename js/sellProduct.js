@@ -163,3 +163,66 @@ function updateInventory(productName, soldQuantity) {
     objectStore.createIndex("name", "name", { unique: true });
   };
 }
+let products;
+function displayProductList() {
+  // Open a connection to IndexedDB
+  const request = indexedDB.open("inventory", 1);
+
+  request.onerror = function (event) {
+    console.error("Error opening database:", event.target.error);
+  };
+
+  request.onsuccess = function (event) {
+    const db = event.target.result;
+
+    // Open a transaction on the 'products' object store with readonly access
+    const transaction = db.transaction(["products"], "readonly");
+    const objectStore = transaction.objectStore("products");
+
+    // Get all products from the object store
+    const getRequest = objectStore.getAll();
+
+    getRequest.onsuccess = function (event) {
+      products = event.target.result;
+      console.log(products);
+    };
+
+    getRequest.onerror = function (event) {
+      console.error("Error retrieving products:", event.target.error);
+    };
+  };
+
+  request.onupgradeneeded = function (event) {
+    // Create 'products' object store if it doesn't exist
+    const db = event.target.result;
+    const objectStore = db.createObjectStore("products", {
+      keyPath: "productName",
+    });
+    objectStore.createIndex("name", "name", { unique: true });
+  };
+}
+
+const productNameInput = document.getElementById("productName");
+const sellingPriceInput = document.getElementById("sellingPrice");
+
+// Function to find a product by name
+function findProductByName(name) {
+  return products.find(
+    (product) => product.productName.toLowerCase() === name.toLowerCase()
+  );
+}
+
+// Function to update selling price based on product name
+function updateSellingPrice() {
+  const productName = productNameInput.value.trim();
+  const product = findProductByName(productName);
+  if (product) {
+    sellingPriceInput.value = product.tabletsellingPrice;
+  } else {
+    sellingPriceInput.value = ""; // Clear selling price if product not found
+  }
+}
+
+// Event listener for product name input
+productNameInput.addEventListener("input", updateSellingPrice);
+displayProductList()

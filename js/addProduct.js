@@ -8,23 +8,45 @@ request.onerror = function (event) {
 request.onsuccess = function (event) {
   const db = event.target.result;
 
+  
   // Add product function
   function addProduct(product) {
-    // Create a transaction on the 'products' object store with readwrite access
     const transaction = db.transaction(["products"], "readwrite");
-
-    // Access the object store
     const objectStore = transaction.objectStore("products");
 
-    // Add the product to the object store
-    const request = objectStore.add(product);
+    // Check if product already exists
+    const request = objectStore.get(product.productName);
 
     request.onsuccess = function (event) {
-      console.log("Product added successfully!");
+      const existingProduct = event.target.result;
+
+      if (existingProduct) {
+        // If product exists, update quantity
+        existingProduct.strip += product.strip;
+        // existingProduct.tabstrip += product.tabstrip;
+        existingProduct.tablet += product.strip * product.tabstrip;
+
+        const updateRequest = objectStore.put(existingProduct);
+        updateRequest.onsuccess = function () {
+          console.log("Product quantity updated successfully!");
+        };
+        updateRequest.onerror = function (event) {
+          console.error("Error updating product quantity:", event.target.error);
+        };
+      } else {
+        // If product doesn't exist, add new product
+        const addRequest = objectStore.add(product);
+        addRequest.onsuccess = function () {
+          console.log("Product added successfully!");
+        };
+        addRequest.onerror = function (event) {
+          console.error("Error adding product:", event.target.error);
+        };
+      }
     };
 
     request.onerror = function (event) {
-      console.error("Error adding product:", event.target.error);
+      console.error("Error checking existing product:", event.target.error);
     };
   }
 
@@ -116,5 +138,8 @@ request.onsuccess = function (event) {
 
 request.onupgradeneeded = function (event) {
   const db = event.target.result;
-  db.createObjectStore("products", { keyPath: "productName", autoIncrement: true });
+  db.createObjectStore("products", {
+    keyPath: "productName",
+    autoIncrement: true,
+  });
 };
