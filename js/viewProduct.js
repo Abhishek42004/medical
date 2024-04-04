@@ -90,7 +90,7 @@ function createProductRow(product) {
   row.appendChild(mrpCell);
 
   const expiryCell = document.createElement("td");
-  expiryCell.textContent = product.expiry.toFixed(2);
+  expiryCell.textContent = product.expiry;
   row.appendChild(expiryCell);
 
   const tabletSellingPriceCell = document.createElement("td");

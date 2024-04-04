@@ -8,7 +8,7 @@ request.onerror = function (event) {
 request.onsuccess = function (event) {
   const db = event.target.result;
 
-  
+
   // Add product function
   function addProduct(product) {
     const transaction = db.transaction(["products"], "readwrite");
@@ -90,7 +90,7 @@ request.onsuccess = function (event) {
       const tabstrip = parseInt(tabstripInput.value);
       const costPrice = parseFloat(costPriceInput.value);
       const mrp = parseFloat(mrpInput.value);
-      const expiry = parseFloat(expiryInput.value);
+      const expiry = expiryInput.value
 
       // Validate numeric inputs
       if (
