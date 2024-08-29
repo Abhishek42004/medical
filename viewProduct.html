@@ -17,6 +17,30 @@
 
       <div id="productList"></div>
     </div>
+    <!-- Edit Product Modal -->
+<div id="editProductModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Edit Product</h2>
+    <form id="editProductForm">
+      <label for="productName">Product Title:</label>
+      <input type="text" id="productName" name="productName" required />
+      <label for="tablet">Tab:</label>
+      <input type="text" id="tablet" name="tablet" required />
+      <label for="costPrice">Cost Price:</label>
+      <input type="number" id="costPrice" name="costPrice" step="0.01" required />
+      <label for="mrp">MRP:</label>
+      <input type="number" id="mrp" name="mrp" step="0.01" required />
+      <label for="expiry">Expiry:</label>
+      <input type="text" id="expiry" name="expiry" required />
+      <label for="tabletSellingPrice">Selling Price:</label>
+      <input type="number" id="tabletSellingPrice" name="tabletSellingPrice"required />
+      <input type="hidden" id="originalProductName" name="originalProductName" />
+      <button type="submit">Save</button>
+    </form>
+  </div>
+</div>
+
 
     <script src="js/viewProduct.js"></script>
   </body>
